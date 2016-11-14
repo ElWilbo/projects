@@ -28,7 +28,7 @@ class App(Frame):
 	# Display input on item window. *****
 	
 	def input_data(self):
-		con = lite.connect('reciept_data.db')
+		con = lite.connect('receipt_data.db')
 		x = random() * 10000000
 		self.y = int(x)
 		with con:
@@ -57,12 +57,11 @@ class App(Frame):
 	
 		
 	def input_text(self):
-		con = lite.connect('grocery_data.db')
+		con = lite.connect('receipt_data.db')
 		self.entry_name.focus()
 		with con:
 			cur = con.cursor()
 			cur.execute("INSERT INTO item_data(id, item_name, item_price) VALUES(?,?,?);", (self.y,self.entry_name.get(),self.entry_price.get()))
-		print('Sucess')
 		self.entry_name.delete(0,'end')
 		self.entry_price.delete(0,'end')
 
