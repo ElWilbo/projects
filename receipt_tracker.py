@@ -3,9 +3,10 @@ import sqlite3 as lite
 from random import *
 from math import *
 
+ 
 class App(Frame):
-	def __init__(self,master):
-		Frame.__init__(self,master, height = 100, width = 100)
+	def __init__(self,master):						#Create window for inputting store information.
+		Frame.__init__(self,master, height = 100, width = 100)			
 		self.label_store = Label(self, text = 'Store Name: ')
 		self.label_store.grid(row=1, column =1)
 		self.entry_store = Entry(self)
@@ -25,12 +26,11 @@ class App(Frame):
 		self.upload_button = Button(self, text ='Upload', command = self.input_data).grid(row=5, column =2)
 		self.item_button = Button(self, text='Add Items', command = self.makeform).grid(row=5, column =1)
 	
-	# Display input on item window. *****
-	
+	#Function that inserts store info into a table trip_data, then clears the form. 
 	def input_data(self):
 		con = lite.connect('receipt_data.db')
-		x = random() * 10000000
-		self.y = int(x)
+		x = random() * 10000000				#Created a random number generator to link the store data and the item_data
+		self.y = int(x)					#So I know what items were bought during a specific store trip
 		with con:
 			cur = con.cursor()
 			cur.execute("INSERT INTO trip_data(id, store, tax_paid, balance, date) VALUES(?,?,?,?,?);", (self.y, self.entry_store.get(), self.entry_tax.get(), self.entry_balance.get(), self.entry_date.get()))
@@ -39,7 +39,9 @@ class App(Frame):
 		self.entry_balance.delete(0,'end')
 		self.entry_date.delete(0,'end')
 		self.entry_store.focus()
-		
+	
+	# Creating the second window to input individual items purchases, name and price
+	
 	def makeform(self):
 		root = Tk()
 		self.label_name = Label(root, text = 'Item Name: ')
@@ -55,6 +57,7 @@ class App(Frame):
 		self.input_button.grid(row=4, column=2)
 		root.mainloop()
 	
+	#Function that inserts the item input into a sqlite table called item_data, then clears the form 
 		
 	def input_text(self):
 		con = lite.connect('receipt_data.db')
@@ -65,6 +68,7 @@ class App(Frame):
 		self.entry_name.delete(0,'end')
 		self.entry_price.delete(0,'end')
 
+#Function that launches the GUI		
 def main():
 	root = Tk()
 	App(root).pack(expand=True, fill='both')
